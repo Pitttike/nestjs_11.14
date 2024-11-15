@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { CreateSongDto } from './dto/create-song.dto';
 import { UpdateSongDto } from './dto/update-song.dto';
 import { PrismaService } from 'src/prisma.service';
+import { strict } from 'assert';
+import { title } from 'process';
 
 @Injectable()
 export class SongService {
@@ -53,12 +55,26 @@ export class SongService {
       where : {Price : 0}
     })
   }
-  findTopSongs(count : number) {
+  findTopSongs(count : string) {
+    if (!count) {
+      count = "10";
+    }
     return this.db.song.findMany({
       orderBy : {
         rate : 'desc'
-      }
+      },
+  
+      take : parseInt(count)
     })
+  }
+
+  findPopularArtists() {
+    return this.db.song.groupBy({
+      by: ['author'],
+      _count: {
+         : { title: true}
+      }
+        })
   }
 
 }

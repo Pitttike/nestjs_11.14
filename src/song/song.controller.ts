@@ -22,10 +22,15 @@ export class SongController {
   }
 
   @Get('top')
-  findTopSong(@Query('count') count : number) {
+  findTopSong(@Query('count') count : string) {
     return this.songService.findTopSongs(count);
   }
 
+  @Get('popularArtists')
+  findPopularArtists() {
+    return this.songService.findPopularArtists();
+  }
+  
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.songService.findOne(+id);
@@ -40,6 +45,7 @@ export class SongController {
   remove(@Param('id') id: string) {
     return this.songService.remove(+id);
   }
+
 
 
 
