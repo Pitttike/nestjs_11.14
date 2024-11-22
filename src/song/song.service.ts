@@ -2,8 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { CreateSongDto } from './dto/create-song.dto';
 import { UpdateSongDto } from './dto/update-song.dto';
 import { PrismaService } from 'src/prisma.service';
-import { strict } from 'assert';
-import { title } from 'process';
 
 @Injectable()
 export class SongService {
@@ -68,13 +66,19 @@ export class SongService {
     })
   }
 
-  findPopularArtists() {
-    return this.db.song.groupBy({
-      by: ['author'],
+  async findPopularArtists() {
+    const result = await this.db.song.groupBy({
+      by:["author"],
       _count: {
-         : { title: true}
+        author: true
+      },
+      orderBy: {
+        _count: {author:'desc'}
       }
-        })
+      })
+      return result.map(s=> {
+        s.author,
+        s._count
+      })
+    }
   }
-
-}

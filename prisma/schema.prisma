@@ -20,4 +20,20 @@ model Song {
   Length Int
   Price Int
   rate Int
+  playlists Playlist[]
+  artist Artist @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  artistId Int
+}
+
+model Playlist {
+  id Int @id @default(autoincrement())
+  name String
+  songs Song[]
+}
+
+model Artist {
+  id Int @id @default(autoincrement())
+  name String
+  birthDate DateTime @db.Date
+  songs Song[]
 }
